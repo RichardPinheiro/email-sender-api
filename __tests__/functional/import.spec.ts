@@ -68,4 +68,27 @@ describe('Import', () => {
             ])
         )
     })
+
+    it('should not recreate tags that already exists', async () => {
+        const contactFileStream = Readable.from([
+            'richard@gmail.com\n',
+            'test@gmail.com\n',
+            'test2@gmail.com\n'
+        ])
+
+        const impotContacts = new ImportContactsService()
+
+        await Tag.create({ title: 'Students' })
+
+        await impotContacts.run(contactFileStream, ['Students', 'Class A'])
+
+        const createdTags = await Tag.find({}).lean()
+
+        expect(createdTags).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({ title: 'Students' }),
+                expect.objectContaining({ title: 'Class A' })
+            ])
+        )
+    })
 })
