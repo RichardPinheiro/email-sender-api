@@ -21,7 +21,7 @@ class App {
     }
 
     private database (): void {
-        mongoose.connect(process.env.DB_CONNECTION_STRING, { useNewUrlParser: true })
+        mongoose.connect('mongodb://localhost:27017,localhost:27018/gobarber?replicaSet=rs0', { useNewUrlParser: true })
     }
 
     private routes (): void {
