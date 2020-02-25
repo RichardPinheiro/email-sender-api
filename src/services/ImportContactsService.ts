@@ -31,7 +31,11 @@ class ImportContactsService {
         parseCsv.on('data', async line => {
             const [email] = line
 
-            await Contact.create({ email, tags: tagsIds })
+            await Contact.findOneAndUpdate(
+                { email },
+                { $addToSet: { tags: tagsIds } },
+                { upsert: true }
+            )
         })
 
         await new Promise(resolve => parseCsv.on('end', resolve))
