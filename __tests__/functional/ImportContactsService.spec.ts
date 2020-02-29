@@ -1,25 +1,20 @@
 const { Readable } = require('stream');
 import mongoose from 'mongoose'
 
+import MongoMock from '../utils/MongoMock';
+
 import ImportContactsService from '../../src/services/ImportContactsService';
 
 import Contact from '../../src/schemas/Contact'
 import Tag from '../../src/schemas/Tag'
 
-describe('Import', () => {
+describe('Import Contacts', () => {
     beforeAll(async () => {
-        if (!process.env.MONGO_URL) {
-            throw new Error('MongoDB server not initialized');
-        }
-
-        await mongoose.connect(process.env.MONGO_URL, {
-            useNewUrlParser: true,
-            useCreateIndex: true
-        })
+        await MongoMock.connect()
     })
 
     afterAll(async () => {
-        await mongoose.connection.close()
+        await MongoMock.disconnect()
     })
 
     beforeEach(async () => {

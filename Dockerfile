@@ -1,13 +1,13 @@
-FROM node:alpine
+FROM node:lts-alpine
 
-RUN mkdir -p /usr/app
-WORKDIR /usr/app
+RUN mkdir -p /home/node/api/node_modules && chown -R node:node /home/node/api
+WORKDIR /home/node/api
 
-COPY package.json ./
+COPY package.json yarn.* ./
+USER node
 RUN yarn
 
-COPY . ./
+COPY --chown=node:node . .
 
+CMD ["yarn", "start"]
 EXPOSE 3333
-
-CMD yarn dev

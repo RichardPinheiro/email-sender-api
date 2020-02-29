@@ -1,6 +1,9 @@
 import SES from 'aws-sdk/clients/ses';
+import { Omit } from 'yargs';
 
-class SendmessageService {
+import Message, { MessageAttributes, MessageModel } from '../../src/schemas/Message';
+
+class SendMessageService {
     private client: SES
 
     public constructor() {
@@ -9,7 +12,13 @@ class SendmessageService {
         })
     }
 
-    public async run(): Promise<void> {
+    public async run(
+        messageData: Omit<MessageAttributes, 'completedAt'>
+    ): Promise<MessageModel> {
+        const message = await Message.create(messageData)
+
+        return message
+
         await this.client.sendEmail({
             Source: 'Richard Pinheiro <test@gmail.com>',
             Destination: {
@@ -30,4 +39,4 @@ class SendmessageService {
     }
 }
 
-export default SendmessageService
+export default SendMessageService
