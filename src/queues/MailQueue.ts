@@ -1,5 +1,18 @@
 import Queue from 'bull';
+import redisConfig from '../config/redis';
+import MessageData from '../services/structures/MessageData';
 
-const MailQueue = new Queue('mail')
+export interface MailJobData {
+    to: string;
+    messageData: MessageData;
+}
 
-export default MailQueue
+const MailQueue = new Queue('mail', {
+    limiter: {
+        max: 90,
+        duration: 1000,
+    },
+    redis: redisConfig,
+});
+
+export default MailQueue;

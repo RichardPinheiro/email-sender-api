@@ -1,7 +1,7 @@
 import MongoMock from '../utils/MongoMock';
 import QueueMock from '../utils/QueueMock';
 
-import SendMessageService from '../../src/services/SendMessageService';
+import CreateMessageService from '../../src/services/CreateMessageService';
 
 import Contact from '../../src/schemas/Contact'
 import Tag from '../../src/schemas/Tag'
@@ -23,7 +23,7 @@ describe('Send Message', () => {
     })
 
     it('should be able to create a new message', async () => {
-        const sendMessage = new SendMessageService()
+        const sendMessage = new CreateMessageService()
 
         const tags = await Tag.create([
             { title: 'Students' },          
@@ -45,7 +45,7 @@ describe('Send Message', () => {
     })
 
     it('should created a redis register for each recipients email', async () => {
-        const sendMessage = new SendMessageService()
+        const sendMessage = new CreateMessageService()
 
         const tags = await Tag.create([
             { title: 'Students' },          

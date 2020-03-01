@@ -1,13 +1,11 @@
 import mongoose, { Document, Schema } from 'mongoose'
 
-export type MessageAttributes = {
+export type MessageModel = Document & {
     subject: string,
     body: string,
     completedAt: Date,
     tags: string[]
 }
-
-export type MessageModel = Document & MessageAttributes 
 
 const MessageSchema = new Schema(
     {

@@ -1,5 +1,4 @@
 const { Readable } = require('stream');
-import mongoose from 'mongoose'
 
 import MongoMock from '../utils/MongoMock';
 
