@@ -7,7 +7,11 @@ import MessageData from './structures/MessageData';
 
 class CreateMessageService {
     public async run(messageData: MessageData, tags: string[]): Promise<MessageModel> {
-        const message = await Message.create(messageData)
+        const message = await Message.create({
+            subject: messageData.subject,
+            body: messageData.body,
+            tags
+        })
 
         const recipients = await Contact.find({
             tags: {
