@@ -1,4 +1,5 @@
 import MongoMock from '../utils/MongoMock';
+import QueueMock from '../utils/QueueMock';
 
 import SendMessageService from '../../src/services/SendMessageService';
 
@@ -18,6 +19,7 @@ describe('Send Message', () => {
     beforeEach(async () => {
         await Tag.deleteMany({})
         await Contact.deleteMany({})
+        await Message.deleteMany({})
     })
 
     it('should be able to create a new message', async () => {
@@ -32,14 +34,55 @@ describe('Send Message', () => {
 
         const messageData = {
             subject: 'Hello World',
-            body: '<p>Just testing the email</p>',
-            tags: tagsIds
+            body: '<p>Just testing the email</p>'
         }
 
-        await sendMessage.run(messageData)
+        await sendMessage.run(messageData, tagsIds)
 
         const message = await Message.findOne(messageData)
 
         expect(message).toBeTruthy()
+    })
+
+    it('should created a redis register for each recipients email', async () => {
+        const sendMessage = new SendMessageService()
+
+        const tags = await Tag.create([
+            { title: 'Students' },          
+            { title: 'Classe A' }            
+        ])
+
+        const tagsIds = tags.map(tag => tag._id)
+
+        const contacts = [
+            { email: 'richard@gmail.com', tags: tagsIds },
+            { email: 'test@gmail.com', tags: tagsIds },
+            { email: 'test2@gmail.com', tags: tagsIds }
+        ]
+
+        await Contact.create(contacts)
+
+        const messageData = {
+            subject: 'Hello World',
+            body: '<p>Just testing the email</p>'
+        }
+
+        await sendMessage.run(messageData, tagsIds)
+
+        expect(QueueMock.add).toHaveBeenCalledWith({
+            to: contacts[0].email,
+            messageData
+        })
+
+        expect(QueueMock.add).toHaveBeenCalledWith({
+            to: contacts[1].email,
+            messageData
+        })
+
+        expect(QueueMock.add).toHaveBeenCalledWith({
+            to: contacts[1].email,
+            messageData
+        })
+
     })
 })
