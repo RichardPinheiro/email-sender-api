@@ -6,11 +6,6 @@
   The simple microservice to send emails
 </h4>
 
-<p align="center">
-  <a href="#-tecnologias">Technologies</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#-project">Project</a>
-</p>
-
 <br>
 
 ## Technologies
@@ -45,7 +40,7 @@ This project was developed with the following technologies:
 
 ## 💻 To run tests
 
-* **run:** `$ yarn test`
+* **run:** `$ yarn test` or `$ yarn test --runInBand` to run tests separately
 
 ## How to contribute
 
