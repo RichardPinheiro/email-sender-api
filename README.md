@@ -1,5 +1,5 @@
 <h1 align="center">
-   Send emails to a list the easy way
+   :outbox_tray: Send emails to a list the easy way
 </h1>
 
 <h4 align="center">
